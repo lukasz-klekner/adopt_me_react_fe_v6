@@ -1,9 +1,8 @@
-import React from "react";
-
-const Pet = ({ animal, name }) =>
-  React.createElement("div", {}, [
-    React.createElement("h2", {}, animal),
-    React.createElement("h3", {}, name),
-  ]);
+const Pet = ({ animal, name }) => (
+  <div>
+    <h2>{animal}</h2>
+    <h3>{name}</h3>
+  </div>
+);
 
 export default Pet;
