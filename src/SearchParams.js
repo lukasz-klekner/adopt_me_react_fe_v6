@@ -1,4 +1,3 @@
-import { even } from "prelude-ls";
 import { useState } from "react";
 
 const SearchParams = () => {
