@@ -5,7 +5,9 @@ const ANIMALS = ["bird", "cat", "dog", "rabbit", "reptile"];
 const SearchParams = () => {
   const [location, setLocation] = useState("Seattle, WA");
   const [animal, setAnimal] = useState("");
-  const [breeds, setBreeds] = useState([]);
+  const [breed, setBreed] = useState("");
+
+  const breeds = [];
 
   const updateLocation = (event) => setLocation(event.target.value);
 
@@ -43,7 +45,7 @@ const SearchParams = () => {
           Breed
           <select
             id="breed"
-            value={breeds}
+            value={breed}
             onChange={handleSelectChange}
             onBlur={handleSelectChange}
           >
