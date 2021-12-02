@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Pet from "./Pet";
+import useBreedList from "./useBreedList";
 
-const localCache = {};
 const ANIMALS = ["bird", "cat", "dog", "rabbit", "reptile"];
 
 const SearchParams = () => {
@@ -9,38 +9,13 @@ const SearchParams = () => {
   const [animal, setAnimal] = useState("");
   const [pets, setPets] = useState([]);
   const [breed, setBreed] = useState("");
+  const [breedList] = useBreedList(animal)
 
-  const [breedList, setBreedList] = useState([]);
-  const [status, setStatus] = useState("unloaded");
   const updateLocation = (event) => setLocation(event.target.value);
 
   const handleSelectChange = (event) => setAnimal(event.target.value);
 
   const handleSelectBreedChange = (event) => setBreed(event.target.value);
-
-  useEffect(() => {
-    if (!animal) {
-      setBreedList([]);
-    } else if (localCache[animal]) {
-      setBreedList(localCache[animal]);
-    } else {
-      requestBreedList();
-    }
-  }, [animal]);
-
-  async function requestBreedList() {
-    setBreedList([]);
-    setStatus("loading");
-
-    const response = await fetch(
-      `http://pets-v2.dev-apis.com/breeds?animal=${animal}`
-    );
-    const json = await response.json();
-
-    localCache[animal] = json.breeds || [];
-    setBreedList(localCache[animal]);
-    setStatus("loaded");
-  }
 
   const requestPets = async () => {
     const response = await fetch(
