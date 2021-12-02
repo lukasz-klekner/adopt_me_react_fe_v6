@@ -19,19 +19,24 @@ const SearchParams = () => {
 
   const requestPets = async () => {
     const response = await fetch(
-      `http://pets-v2.dev-apis.com/pets?animal=${animal}&location=${location}`
+      `http://pets-v2.dev-apis.com/pets?animal=${animal}&location=${location}&breed=${breed}`
     );
     const json = await response.json();
     setPets(json.pets);
   };
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    requestPets()
+  }
+
   useEffect(() => {
     requestPets();
-  }, [animal]);
+  }, []);
 
   return (
     <div className="search-params">
-      <form>
+      <form onSubmit={handleSubmit}>
         <label htmlFor="location">
           Location
           <input
