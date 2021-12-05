@@ -18,8 +18,6 @@ class Details extends Component {
     }
 
     render() {
-        console.log(this.state);
-
         if (this.state.loading) {
           return <h2>loading … </h2>;
         }
