@@ -24,8 +24,18 @@ class Details extends Component {
         }
 
         const { animal, breed, city, state, description, name, images } = this.state;
-        throw new Error('Siemka')
 
+        return (
+          <div className="details">
+              <Carousel images={images}/>
+            <div>
+              <h1>{name}</h1>
+              <h2>{`${animal} — ${breed} — ${city}, ${state}`}</h2>
+              <button>Adopt {name}</button>
+              <p>{description}</p>
+            </div>
+          </div>
+        );
       }
 }
 
