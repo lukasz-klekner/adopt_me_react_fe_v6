@@ -1,61 +1,65 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from 'react'
+import { useSelector } from 'react-redux'
 
-import Result from "./Result";
-import useBreedList from "./useBreedList";
-import ThemeContext from "./ThemeContext";
+import Result from './Result'
+import useBreedList from './useBreedList'
 
-const ANIMALS = ["bird", "cat", "dog", "rabbit", "reptile"];
+const ANIMALS = ['bird', 'cat', 'dog', 'rabbit', 'reptile']
 
 const SearchParams = () => {
-  const [location, setLocation] = useState("Seattle, WA");
-  const [animal, setAnimal] = useState("");
-  const [pets, setPets] = useState([]);
-  const [breed, setBreed] = useState("");
+  const location = useSelector((state) => state.location)
+  const breed = useSelector((state) => state.breed)
+  const animal = useSelector((state) => state.animal)
+  const theme = useSelector((state) => state.theme)
+  // const [location, setLocation] = useState('Seattle, WA')
+  // const [animal, setAnimal] = useState('')
+  const [pets, setPets] = useState([])
+  // const [breed, setBreed] = useState('')
   const [breedList] = useBreedList(animal)
-  const [theme, setTheme] = useContext(ThemeContext)
+  // const [theme, setTheme] = useContext(ThemeContext)
 
-  const updateLocation = (event) => setLocation(event.target.value);
+  // const updateLocation = (event) => setLocation(event.target.value)
 
-  const handleSelectChange = (event) => setAnimal(event.target.value);
+  // const handleSelectChange = (event) => setAnimal(event.target.value)
 
-  const handleSelectBreedChange = (event) => setBreed(event.target.value);
+  // const handleSelectBreedChange = (event) => setBreed(event.target.value)
 
   const requestPets = async () => {
     const response = await fetch(
       `http://pets-v2.dev-apis.com/pets?animal=${animal}&location=${location}&breed=${breed}`
-    );
-    const json = await response.json();
-    setPets(json.pets);
-  };
+    )
+    const json = await response.json()
+    setPets(json.pets)
+  }
 
   const handleSubmit = (event) => {
-    event.preventDefault();
+    event.preventDefault()
     requestPets()
   }
 
   useEffect(() => {
-    requestPets();
-  }, []);
+    requestPets()
+  }, [])
 
   return (
-    <div className="search-params">
+    <div className='search-params'>
       <form onSubmit={handleSubmit}>
-        <label htmlFor="location">
+        <label htmlFor='location'>
           Location
           <input
-            id="location"
+            id='location'
             value={location}
-            onChange={updateLocation}
-            placeholder="Location"
+            // onChange={updateLocation}
+            placeholder='Location'
           />
         </label>
-        <label htmlFor="animal">
+        <label htmlFor='animal'>
           Animal
           <select
-            id="animal"
+            id='animal'
             value={animal}
-            onChange={handleSelectChange}
-            onBlur={handleSelectChange}
+            // onChange={handleSelectChange}
+            // onBlur={handleSelectChange}
           >
             <option />
             {ANIMALS.map((animal) => (
@@ -65,13 +69,13 @@ const SearchParams = () => {
             ))}
           </select>
         </label>
-        <label htmlFor="breed">
+        <label htmlFor='breed'>
           Breed
           <select
-            id="breed"
+            id='breed'
             value={breed}
-            onChange={handleSelectBreedChange}
-            onBlur={handleSelectBreedChange}
+            // onChange={handleSelectBreedChange}
+            // onBlur={handleSelectBreedChange}
           >
             <option />
             {breedList?.map((breed) => (
@@ -81,12 +85,12 @@ const SearchParams = () => {
             ))}
           </select>
         </label>
-        <label htmlFor="theme">
+        <label htmlFor='theme'>
           Theme
           <select
             value={theme}
-            onChange={e => setTheme(e.target.value)}
-            onBlur={e => setTheme(e.target.value)}
+            // onChange={(e) => setTheme(e.target.value)}
+            // onBlur={(e) => setTheme(e.target.value)}
           >
             <option value='darkblue'>Dark Blue</option>
             <option value='peru'>Peru</option>
@@ -94,11 +98,11 @@ const SearchParams = () => {
             <option value='mediumorchid'>Medium Orchid</option>
           </select>
         </label>
-        <button style={{backgroundColor: theme}}>Submit</button>
+        <button style={{ backgroundColor: theme }}>Submit</button>
       </form>
-      <Result pets={pets}/>
+      <Result pets={pets} />
     </div>
-  );
-};
+  )
+}
 
-export default SearchParams;
+export default SearchParams
