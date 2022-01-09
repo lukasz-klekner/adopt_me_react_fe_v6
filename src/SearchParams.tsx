@@ -1,5 +1,11 @@
-import { useState, useEffect } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import {
+  useState,
+  useEffect,
+  FunctionComponent,
+  FormEvent,
+  ChangeEvent,
+} from 'react'
+import { useSelector, useDispatch, RootStateOrAny } from 'react-redux'
 
 import changeBreed from './actionCreator/changeBreed'
 import changeAnimal from './actionCreator/changeAnimal'
@@ -7,15 +13,16 @@ import changeLocation from './actionCreator/changeLocation'
 import changeTheme from './actionCreator/changeTheme'
 import Result from './Result'
 import useBreedList from './useBreedList'
+import { Animal, Pet, PetAPIResponse } from './APIResponsesType'
 
-const ANIMALS = ['bird', 'cat', 'dog', 'rabbit', 'reptile']
+const ANIMALS: Animal[] = ['bird', 'cat', 'dog', 'rabbit', 'reptile']
 
-const SearchParams = () => {
-  const location = useSelector((state) => state.location)
-  const breed = useSelector((state) => state.breed)
-  const animal = useSelector((state) => state.animal)
-  const theme = useSelector((state) => state.theme)
-  const [pets, setPets] = useState([])
+const SearchParams: FunctionComponent = () => {
+  const location = useSelector((state: RootStateOrAny) => state.location)
+  const breed = useSelector((state: RootStateOrAny) => state.breed)
+  const animal = useSelector((state: RootStateOrAny) => state.animal)
+  const theme = useSelector((state: RootStateOrAny) => state.theme)
+  const [pets, setPets] = useState([] as Pet[])
   const [breedList] = useBreedList(animal)
   const dispatch = useDispatch()
 
@@ -23,22 +30,22 @@ const SearchParams = () => {
     const response = await fetch(
       `http://pets-v2.dev-apis.com/pets?animal=${animal}&location=${location}&breed=${breed}`
     )
-    const json = await response.json()
+    const json = (await response.json()) as PetAPIResponse
     setPets(json.pets)
   }
 
-  const handleAnimal = (e) => {
+  const handleAnimal = (event: ChangeEvent<HTMLSelectElement>) => {
     dispatch(changeBreed(''))
-    dispatch(changeAnimal(e.target.value))
+    dispatch(changeAnimal(event.target.value))
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (event: FormEvent) => {
     event.preventDefault()
-    requestPets()
+    void requestPets()
   }
 
   useEffect(() => {
-    requestPets()
+    void requestPets()
   }, [])
 
   return (
@@ -49,7 +56,7 @@ const SearchParams = () => {
           <input
             id='location'
             value={location}
-            onChange={(e) => dispatch(changeLocation(e.target.value))}
+            onChange={(event) => dispatch(changeLocation(event.target.value))}
             placeholder='Location'
           />
         </label>
@@ -74,8 +81,12 @@ const SearchParams = () => {
           <select
             id='breed'
             value={breed}
-            onChange={(e) => dispatch(changeBreed(e.target.value))}
-            onBlur={(e) => dispatch(changeBreed(e.target.value))}
+            onChange={(event) =>
+              dispatch(changeBreed(event.target.value as Animal))
+            }
+            onBlur={(event) =>
+              dispatch(changeBreed(event.target.value as Animal))
+            }
           >
             <option />
             {breedList?.map((breed) => (
@@ -89,8 +100,8 @@ const SearchParams = () => {
           Theme
           <select
             value={theme}
-            onChange={(e) => dispatch(changeTheme(e.target.value))}
-            onBlur={(e) => dispatch(changeTheme(e.target.value))}
+            onChange={(event) => dispatch(changeTheme(event.target.value))}
+            onBlur={(event) => dispatch(changeTheme(event.target.value))}
           >
             <option value='darkblue'>Dark Blue</option>
             <option value='peru'>Peru</option>
