@@ -2,7 +2,7 @@ import { Suspense, lazy } from 'react'
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom'
 import { Provider } from 'react-redux'
 
-import store from './store'
+import store from './redux/store'
 import './App.css'
 
 const Details = lazy(() => import('./Details'))
