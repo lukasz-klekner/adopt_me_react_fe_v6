@@ -28,12 +28,13 @@ class Carousel extends Component<IProps> {
 
     return (
       <div className='carousel'>
-        <img src={images[active]} alt='animal' />
+        <img src={images[active]} data-testid='hero' alt='animal' />
         <div className='carousel-smaller'>
           {images.map((photo, index) => (
             <img
               key={photo}
               data-index={index}
+              data-testid={`thumbnail${index}`}
               src={photo}
               className={index === active ? 'active' : ''}
               alt='animal thumbnail'
